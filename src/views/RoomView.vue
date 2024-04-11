@@ -11,6 +11,7 @@ const error = ref<string | undefined>();
 
 let last_room_event_id = -1;
 let last_client_event_id = -1;
+let last_request_id = -1;
 
 let events = ref<string[]>([]);
 
@@ -37,6 +38,15 @@ function addEvents(data: any) {
         last_client_event_id = client_events[client_events.length - 1].id;
     }
 
+    const requests = data.requests as {id: number, data: string}[];
+    if (requests.length > 0) {
+        for (const request of requests) {
+            console.log(request);
+        }
+
+        last_request_id = requests[requests.length - 1].id;
+    }
+
     if (newEvents.length > 0) {
         events.value = events.value.concat(newEvents);
     }
@@ -46,7 +56,7 @@ const updateEvents = async () => {
     try {
         const data = await server.getEvents({
             watch_code: room!!.watch_code,
-            last_room_event_id, last_client_event_id
+            last_room_event_id, last_client_event_id, last_request_id
         });
 
         addEvents(data);

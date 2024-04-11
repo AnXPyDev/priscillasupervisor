@@ -99,7 +99,8 @@ export class Server {
     async getEvents(options: {
         watch_code: string,
         last_room_event_id?: number,
-        last_client_event_id?: number
+        last_client_event_id?: number,
+        last_request_id?: number
     }) {
         const res = await this.connection.post("/user/getevents", this.withSession(options));
         this.assert(res);
