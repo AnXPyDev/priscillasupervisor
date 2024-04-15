@@ -1,0 +1,32 @@
+$shadow-opacity: 0.20;
+
+$clr-dark: (
+    bg-base: #404040,
+    bg-1: #505050,
+    bg-2: #585858,
+    bg-3: #606060,
+    bg-hover-1: #585858,
+    bg-hover-2: #606060,
+    bg-hover-3: #686868,
+    shadow: rgba(100%,100%,100%,$shadow-opacity),
+    fg: #FFFFFF
+);
+
+$clr-light: (
+    bg-base: #F0F0F0,
+    bg-1: #E0E0E0,
+    bg-2: #D8D8D8,
+    bg-3: #D0D0D0,
+    bg-hover-1: #D8D8D8,
+    bg-hover-2: #D0D0D0,
+    bg-hover-3: #C8C8C8,
+    shadow: rgba(0%,0%,0%,$shadow-opacity),
+    fg: #101010
+);
+
+
+@mixin theme($theme) {
+    @each $name, $value in $theme {
+        --clr-#{$name}: #{$value};
+    }
+}

@@ -1,107 +1,122 @@
 <script setup lang="ts">
+import type { Client, RoomEvent } from '@/lib/Bridge';
 import server from '@/lib/Server';
 import { useState } from '@/stores/state';
-import { onUnmounted, ref } from 'vue';
+import { computed, onUnmounted, ref } from 'vue';
+import RoomManager from '@/lib/RoomManager';
+import ClientComponent from '@/components/Client.vue'
+import ClientDetails from '@/components/ClientDetails.vue'
+import RoomEventComponent from '@/components/RoomEvent.vue'
 
 const state = useState();
 
-const room = state.room;
+const room = state.room!!;
 
 const error = ref<string | undefined>();
 
-let last_room_event_id = -1;
-let last_client_event_id = -1;
-let last_request_id = -1;
+const room_events = ref<RoomEvent[]>([]);
+const clients = ref<Client[]>([]);
 
-let events = ref<string[]>([]);
+const room_manager = new RoomManager(room);
 
-let updateTimeout: number | undefined;
-
-function addEvents(data: any) {
-    const newEvents: string[] = [];
-
-    const room_events = data.room_events as {id: number, created: string, data: string }[];
-    if (room_events.length > 0) {
-        for (const room_event of room_events) {
-            newEvents.push(`RE ${room_event.created} ${room_event.data}`);
-        }
-
-        last_room_event_id = room_events[room_events.length - 1].id;
-    }
-    
-    const client_events = data.client_events as {id: number, client_id: number, created: string, data: string }[];
-    if (client_events.length > 0) {
-        for (const client_event of client_events) {
-            newEvents.push(`CE ${client_event.client_id} ${client_event.created} ${client_event.data}`);
-        }
-
-        last_client_event_id = client_events[client_events.length - 1].id;
-    }
-
-    const requests = data.requests as {id: number, data: string}[];
-    if (requests.length > 0) {
-        for (const request of requests) {
-            console.log(request);
-        }
-
-        last_request_id = requests[requests.length - 1].id;
-    }
-
-    if (newEvents.length > 0) {
-        events.value = events.value.concat(newEvents);
-    }
-}
-
-const updateEvents = async () => {
-    try {
-        const data = await server.getEvents({
-            watch_code: room!!.watch_code,
-            last_room_event_id, last_client_event_id, last_request_id
-        });
-
-        addEvents(data);
-    } catch(e) {
-        console.error(e);
-        if (e instanceof Error) {
-            error.value = e.message;
-        }
-    }
-    updateTimeout = setTimeout(updateEvents, 1000);
+room_manager.clientHandler = () => {
+    clients.value = room_manager.clients
 };
 
-if (room) {
-    updateEvents();
+room_manager.roomEventHandler = () => {
+    room_events.value = room_manager.room_events
+};
+
+
+const selected_client_id = ref<number>();
+
+const selected_client = computed<Client | undefined>(() => {
+    return clients.value.find((client) => client.id == selected_client_id.value);
+});
+
+function selectClient(client: Client) {
+    selected_client_id.value = client.id;
 }
 
-onUnmounted(() => {
-    clearTimeout(updateTimeout);
-})
+room_manager.start();
 
+onUnmounted(() => {
+})
 
 </script>
 
 <template>
-    <div v-if="room">
-        <span>{{ room.name }} {{ room.id }} JC: {{ room.join_code }} WC: {{ room.watch_code }}</span>
-        <div class="eventlist">
-            <span v-for="event in events.slice().reverse()">{{ event }}</span>
+<div class="RoomView">
+    <div class="left">
+        <div class="main-header">
+            <div class="room-name">
+                <span class="header">Room {{ room.id }}</span>
+                <span class="name">{{ room.name }}</span>
+            </div>
+            <div class="join-code">
+                <span class="header">Join Code</span>
+                <span class="name">{{ room.join_code }}</span>
+            </div>
+
+        </div>
+        <div class="clients-container">
+            <span>Clients</span>
+            <ClientComponent class="Client" v-for="client in clients" :key="client.id" :data="client" @click="selectClient(client)"/>
+        </div>
+        <div class="room-events">
+            <span>Room events</span>
+            <RoomEventComponent class="RoomEvent" v-for="room_event in room_events.slice().reverse()" :key="room_event.id" :data="room_event"/>
         </div>
     </div>
-    <div v-else>
-        <span>Failed to load room</span>
+
+    <div class="right">
+        <ClientDetails v-if="selected_client" :room="room" :data="selected_client" :key="selected_client.id"/>
     </div>
-    <span v-if="error" class="error">{{ error }}</span>
+
+</div>
 </template>
 
 <style scoped lang="scss">
+@use '@/styles/lib/dimens';
+@use '@/styles/lib/mixins';
 
-.eventlist {
-    display: flex;
-    flex-direction: column;
+
+.RoomView {
+    @include mixins.box;
+    flex-direction: row;
+    align-items: start;
+
+    > div {
+        @include mixins.box;
+        justify-content: start;
+        padding: 0;
+
+    }
+
+    .main-header {
+        @include mixins.box;
+        flex-direction: row;
+        padding: 0;
+        width: 100%;
+        
+        > div {
+            @include mixins.box;
+            background-color: var(--clr-bg-1);
+            flex-grow: 2;
+        }
+    }
+
+    .clients-container, .room-events {
+        @include mixins.box;
+        background-color: var(--clr-bg-1);
+        width: 100%;
+    }
+
+    .Client {
+        width: 100%;
+    }
 }
 
-.error {
-    color: red;
-}
+
 
 </style>

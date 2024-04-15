@@ -1,4 +1,4 @@
-import './assets/styles/main.scss'
+import './styles/main.scss'
 
 import { createApp, watch } from 'vue'
 import { createPinia } from 'pinia'
@@ -58,6 +58,9 @@ router.beforeEach((to, from) => {
         return { name: "dashboard" };
     }
 });
+
+import { setTheme } from './lib/theme'
+setTheme();
 
 app.use(router);
 

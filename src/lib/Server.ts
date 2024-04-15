@@ -9,6 +9,7 @@ type Auth = ReturnType<typeof useAuth>;
 export class Server {
     configuration!: Configuration;
     auth!: Auth;
+    features!: any;
 
     connection!: Axios; 
 
@@ -29,7 +30,7 @@ export class Server {
 
     withSession(data: object = {}): object {
         return {
-            session: this.auth.session!!,
+            session: this.auth.session,
             ...data
         };
     }
@@ -40,22 +41,29 @@ export class Server {
         }
     }
 
+    async post(endpoint: string, data: object = {}) {
+        const res = await this.connection.post(endpoint, this.withSession(data));
+        this.assert(res);
+        return res.data;
+    }
+
     async connect() {
         this.connection = axios.create({
             baseURL: this.configuration.server_url
         });
 
-        await this.connection.post("/info/ping");
+        this.features = await this.post("/info/features");
     }
+    
+
 
     async getInfo() {
-        const res = await this.connection.post("/user/info", this.withSession());
-        this.assert(res);
+        const data = await this.post("/user/info");
 
         this.auth.user = {
-            id: res.data.id,
-            username: res.data.username,
-            displayname: res.data.displayname
+            id: data.id,
+            username: data.username,
+            displayname: data.displayname
         };
     }
 
@@ -65,18 +73,18 @@ export class Server {
     }
 
     async login(username: string, password: string) {
-        const res = await this.connection.post("/user/login", { username, password });
-        this.assert(res);
+        const data = await this.post("/user/login", { username, password });
 
         this.auth.auth = true;
-        this.auth.session = res.data.session!!;
+        this.auth.session = data.session!!;
+
+        console.log(data);
 
         await this.restore();
     }
 
     async logout() {
-        let res = await this.connection.post("/user/logout", this.withSession());
-        this.assert(res);
+        const data = await this.post("/user/logout");
 
         this.auth.auth = false;
         this.auth.session = undefined;
@@ -87,32 +95,14 @@ export class Server {
         name?: string,
         config?: string
     }) {
-        const res = await this.connection.post("/user/createroom", this.withSession({
+        return await this.post("/user/createroom", {
             name: options.name != "" && options.name || undefined,
             config: options.config != "" && options.config || undefined
-        }));
-        this.assert(res);
-
-        return res.data;
+        });
     }
-
-    async getEvents(options: {
-        watch_code: string,
-        last_room_event_id?: number,
-        last_client_event_id?: number,
-        last_request_id?: number
-    }) {
-        const res = await this.connection.post("/user/getevents", this.withSession(options));
-        this.assert(res);
-
-        return res.data;
-    }
-
+    
     async getRooms() {
-        const res = await this.connection.post("/user/getrooms", this.withSession());
-        this.assert(res);
-
-        return res.data;
+        return await this.post("/user/getrooms");
     }
 
 

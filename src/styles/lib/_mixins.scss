@@ -1,0 +1,18 @@
+@use 'dimens';
+
+@mixin box {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: dimens.$padding;
+    padding: dimens.$padding;
+    border-radius: dimens.$radius;
+}
+
+@mixin clickable {
+    &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}

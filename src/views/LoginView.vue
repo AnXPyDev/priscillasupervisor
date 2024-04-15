@@ -39,10 +39,13 @@ async function login() {
 
 <template>
 
-<div class="container">
+<div class="LoginView">
     <h1>login</h1>
+    <span>Server URL</span>
     <input v-model="url"></input>
+    <span>Username</span>
     <input v-model="username"></input>
+    <span>Password</span>
     <input v-model="password" type="password"></input>
     <button @click="login()">login</button>
     <h2 class="error" v-if="error">{{ error }}</h2>
@@ -51,15 +54,19 @@ async function login() {
 </template>
 
 <style scoped lang="scss">
+@use '@/styles/lib/dimens';
 
-.container {
+.LoginView {
+    width: max(200px, 30vw);
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: center;
+    gap: dimens.$padding-small;
+
+    .error {
+        color: red;
+    }
 }
 
-.error {
-    color: red;
-}
 
 </style>

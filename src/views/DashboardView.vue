@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type Room from '@/lib/Room';
+import type { Room } from '@/lib/Bridge';
 import server from '@/lib/Server';
 import router from '@/router';
 import { useState } from '@/stores/state';
@@ -32,34 +32,57 @@ getRooms();
 </script>
 
 <template>
-    <div class="container">
-    <h1>dashboard</h1>
-
+<div class="DashboardView">
+    <span class="title">Dashboard</span>
     <div class="rooms">
         <div v-for="room in rooms" class="room">
-            <span>{{ room.id }} {{ room.name }}</span>
+            <span>{{ room.name }}</span>
+            <div class="space"></div>
             <button @click="watchRoom(room)">watch</button>
         </div>
     </div>    
 
-    <button @click="openCreator()">create room</button>
-    </div>
+    <button @click="openCreator()">Create Room</button>
+</div>
 </template>
 
 <style scoped lang="scss">
-    .container {
+@use '@/styles/lib/dimens';
+
+.DashboardView {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: dimens.$padding;
+    padding: dimens.$padding;
+
+    .rooms {
+        padding: dimens.$padding;
         display: flex;
         flex-direction: column;
         align-items: start;
-
-        .rooms {
+        width: fit-content;
+        gap: dimens.$padding;
+        .room {
+            padding: dimens.$padding;
+            background-color: var(--clr-bg-1);
+            border-radius: dimens.$radius;
             display: flex;
-            flex-direction: column;
-            align-items: start;
-            .room {
-                display: flex;
-                align-items: center;
+            align-items: center;
+            width: 100%;
+            gap: 2em;
+
+            .space {
+                flex-grow: 2;
             }
         }
     }
+
+    .title {
+        padding: dimens.$padding;
+        font-size: 2em;
+        font-weight: 500;
+    }
+}
 </style>
