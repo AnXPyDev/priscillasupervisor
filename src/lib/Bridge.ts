@@ -10,7 +10,7 @@ export interface Client {
     name: string
     room_id: number
     state: string
-    ip_adress: string
+    ip_address: string
 }
 
 export interface ClientEvent {

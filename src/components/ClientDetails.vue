@@ -58,7 +58,7 @@ function lock() {
             </div>
             <div class="bottom">
                 <span class="name">{{ data.name }}</span>
-                <span class="ip_address">{{ data.ip_adress }}</span>
+                <span class="ip_address">{{ data.ip_address }}</span>
             </div>
         </div>
 
