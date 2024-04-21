@@ -31,8 +31,27 @@ async function createRoom() {
 </script>
 
 <template>
-    <input v-model="room_name"></input>
-    <input v-model="config_name"></input>
-    <button @click="createRoom()">create room</button>
-    <h2 v-if="error" class="error">{{ error }}</h2>
+    <div class="RoomCreatorView">
+        <span>Name</span>
+        <input v-model="room_name"></input>
+        <span>Config</span>
+        <input v-model="config_name"></input>
+        <button @click="createRoom()">create room</button>
+        <h2 v-if="error" class="error">{{ error }}</h2>
+    </div>
 </template>
+
+<style scoped lang="scss">
+@use '@/styles/lib/dimens';
+.RoomCreatorView {
+    width: max(200px, 30vw);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: dimens.$padding-small;
+
+    .error {
+        color: red;
+    }
+}
+</style>
