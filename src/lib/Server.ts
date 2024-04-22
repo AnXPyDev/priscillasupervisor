@@ -93,11 +93,13 @@ export class Server {
 
     async createRoom(options: {
         name?: string,
-        config?: string
+        config?: string,
+        config_override?: object
     }) {
         return await this.post("/user/createroom", {
             name: options.name != "" && options.name || undefined,
-            config: options.config != "" && options.config || undefined
+            config: options.config != "" && options.config || undefined,
+            config_override: options.config_override
         });
     }
     

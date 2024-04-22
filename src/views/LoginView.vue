@@ -6,6 +6,7 @@ import { useAuth } from '@/stores/auth';
 import { useConfiguration } from '@/stores/configuration';
 import { useState } from '@/stores/state';
 import { ref } from 'vue';
+import Button from '@/components/Button.vue';
 
 const configuration = useConfiguration();
 const auth = useAuth();
@@ -40,14 +41,20 @@ async function login() {
 <template>
 
 <div class="LoginView">
-    <h1>login</h1>
-    <span>Server URL</span>
-    <input v-model="url"></input>
-    <span>Username</span>
-    <input v-model="username"></input>
-    <span>Password</span>
-    <input v-model="password" type="password"></input>
-    <button @click="login()">login</button>
+    <span class="title">Connect to instance <i class="fa-solid fa-wifi"></i></span>
+    <div class="split">
+        <div class="left">
+            <div><span>Server URL</span></div>
+            <div><span>Username</span></div>
+            <div><span>Password</span></div>
+        </div>
+        <div class="right">
+            <div><input v-model="url"></input></div>
+            <div><input v-model="username"></input></div>
+            <div><input v-model="password" type="password"></input></div>
+        </div>
+    </div>
+    <Button @click="login()"><span>Login <i class="fa-solid fa-right-to-bracket"></i></span></Button>
     <h2 class="error" v-if="error">{{ error }}</h2>
 </div>
 
@@ -56,15 +63,72 @@ async function login() {
 <style scoped lang="scss">
 @use '@/styles/lib/dimens';
 
+$padding: dimens.$padding;
+
 .LoginView {
     width: max(200px, 30vw);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: dimens.$padding-small;
+    justify-content: center;
+    gap: $padding;
+    width: 100%;
+    height: 100%;
+    font-size: 1.2em;
 
-    .error {
+    > .error {
         color: red;
+    }
+
+    > .title {
+        font-weight: 700;
+        font-size: 1.2em;
+    }
+
+    > .split {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        $split_gap: $padding;
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            gap: $padding;
+
+            > div {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                height: 3em;
+            }
+        }
+
+        > .left {
+            padding-right: calc($split_gap / 2);
+        }
+
+        > .right {
+            padding-left: calc($split_gap / 2);
+
+            input {
+                width: 20em;
+                padding: $padding;
+                font-size: 0.8em;
+
+                outline: var(--clr-fg) solid 1.5px;
+                border-radius: 5px;
+                border: none;
+                background-color: var(--clr-bg-1);
+                color: var(--clr-fg);
+
+                &.error {
+                    outline-color: var(--clr-fg-error);
+                }
+            }
+        }
     }
 }
 

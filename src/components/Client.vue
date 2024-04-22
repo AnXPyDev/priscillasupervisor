@@ -3,6 +3,7 @@
 import { computed } from 'vue';
 import type { Client, ClientState } from '../lib/Bridge';
 import server from '@/lib/Server';
+import Button from './Button.vue';
 
 const props = defineProps<{
     data: Client
@@ -14,21 +15,31 @@ const state = computed<ClientState>(() => JSON.parse(props.data.state));
 </script>
 
 <template>
-    <div class="Client">
-        <span class="name"><i class="fa-solid fa-user"></i> {{ data.name }}</span>
-        <i v-if="state.locked" class="fa-solid fa-lock"></i>
-    </div>
+    <Button>
+        <div class="container">
+            <span class="name">{{ data.name }}</span>
+            <div class="states">
+                <i v-if="state.locked" class="fa-solid fa-lock"></i>
+            </div>
+        </div>
+    </Button>
 </template>
 
 <style scoped lang="scss">
 @use '@/styles/lib/dimens';
-@use '@/styles/lib/mixins';
 
-.Client {
-    @include mixins.box;
-    @include mixins.clickable;
+.container {
+    display: flex;
+    gap: dimens.$padding;
+    padding-inline: dimens.$padding-small;
+    width: 100%;
 
-    flex-direction: row;
-    background-color: var(--clr-bg-2);
+    .states {
+        flex-grow: 1;
+        display: flex;
+        gap: dimens.$padding;
+        justify-content: end;
+    }
 }
+
 </style>

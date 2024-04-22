@@ -28,14 +28,22 @@ const props = defineProps<{
     width: 100%;
     border-radius: dimens.$padding;
     overflow: hidden;
-    background-color: var(--clr-bg-2);
+    background-color: var(--clr-soft-shadow);
 
     > div {
-        padding: dimens.$padding;
+        padding: dimens.$padding-small;
+        padding-inline: dimens.$padding;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
     > .time {
-        background-color: var(--clr-bg-3);    
+        font-family: monospace;
+        background-color: var(--clr-soft-shadow);    
+        border-radius: dimens.$padding;
+        overflow: hidden;
+        min-width: 6em;
     }
 
     > .message {

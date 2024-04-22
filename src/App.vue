@@ -5,6 +5,7 @@ import { useState } from '@/stores/state';
 import { useAuth } from './stores/auth';
 import server from './lib/Server';
 import router from './router';
+import Button from '@/components/Button.vue';
 
 const state = useState();
 const auth = useAuth();
@@ -14,6 +15,10 @@ async function logout() {
   router.push({ name: "login" });
 }
 
+function dashboard() {
+  router.push({ name: "dashboard" });
+}
+
 </script>
 
 <template>
@@ -21,12 +26,14 @@ async function logout() {
     <div class="header">
       <span v-if="state.loading > 0">loading...</span>
       <span class="error" v-if="state.error">{{ state.error }}</span>
-      <div class="space"></div>
-      <span v-if="auth.auth">logged in as {{ auth.user?.username }}</span>
-      <button v-if="auth.auth" @click="logout()">logout</button>
+      <template v-if="auth.auth">
+        <Button @click="dashboard()"><span>Dashboard <i class="fa-solid fa-house"></i></span></Button>
+        <Button :disabled="true"><span class="username">{{ auth.user?.username }} <i class="fa-solid fa-user"></i></span></Button>
+        <Button @click="logout()"><span>Logout <i class="fa-solid fa-right-from-bracket"></i></span></Button>
+      </template>
     </div>
 
-    <RouterView></RouterView>
+    <RouterView class="RouterView"></RouterView>
   </div>
 </template>
 
@@ -37,15 +44,17 @@ async function logout() {
   display: flex;
   align-items: center;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
 
 
   .header {
     width: 100%;
     display: flex;
-    gap: 20px;
+    gap: dimens.$padding;
     align-items: center;
+    justify-content: center;
     padding: dimens.$padding;
-    background-color: var(--clr-bg-1);
 
     .space {
       flex-grow: 2;
@@ -54,6 +63,11 @@ async function logout() {
     .error {
       color: #ff0000;
     }
+  }
+
+  > .RouterView {
+    height: 100%;
+    width: 100%;
   }
 }
 

@@ -4,6 +4,7 @@ import server from '@/lib/Server';
 import router from '@/router';
 import { useState } from '@/stores/state';
 import { ref } from 'vue';
+import Button from '@/components/Button.vue';
 
 const state = useState();
 
@@ -33,56 +34,63 @@ getRooms();
 
 <template>
 <div class="DashboardView">
-    <span class="title">Dashboard</span>
-    <div class="rooms">
-        <div v-for="room in rooms" class="room">
-            <span>{{ room.name }}</span>
-            <div class="space"></div>
-            <button @click="watchRoom(room)">watch</button>
+    <div class="rooms top-bottom">
+        <div class="top">
+            <span class="title">Rooms <i class="fa-solid fa-screen-users"></i></span>
         </div>
-    </div>    
-
-    <button @click="openCreator()">Create Room</button>
+        <div class="bottom">
+            <Button class="room" v-for="room in rooms" @click="watchRoom(room)">{{ room.name }}</Button>
+        </div>    
+        <Button class="create_button" @click="openCreator()"><span>Create Room <i class="fa-solid fa-plus"></i></span></Button>
+    </div>
 </div>
 </template>
 
 <style scoped lang="scss">
 @use '@/styles/lib/dimens';
+@use '@/styles/lib/mixins';
 
 .DashboardView {
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: dimens.$padding;
     padding: dimens.$padding;
+    
+    .title {
+        @include mixins.emphasis;
+    }
+
+    .top-bottom {
+        @include mixins.top-bottom;
+    }
 
     .rooms {
+        min-width: 200px;
         padding: dimens.$padding;
         display: flex;
         flex-direction: column;
         align-items: start;
         width: fit-content;
         gap: dimens.$padding;
-        .room {
-            padding: dimens.$padding;
-            background-color: var(--clr-bg-1);
-            border-radius: dimens.$radius;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            gap: 2em;
 
-            .space {
-                flex-grow: 2;
-            }
+        .room {
+            padding: dimens.$padding-small;
+            padding-inline: dimens.$padding;
+            width: 100%;
+        }
+
+        > .bottom {
+            display: flex;
+            flex-direction: column;
+            gap: dimens.$padding;
+        }
+
+        .create_button {
+            width: 100%;
         }
     }
 
-    .title {
-        padding: dimens.$padding;
-        font-size: 2em;
-        font-weight: 500;
-    }
+
 }
 </style>

@@ -1,4 +1,5 @@
-$shadow-opacity: 0.20;
+$shadow-opacity: 0.25;
+$floating-opacity: 0.15;
 
 $clr-dark: (
     bg-base: #404040,
@@ -9,6 +10,8 @@ $clr-dark: (
     bg-hover-2: #606060,
     bg-hover-3: #686868,
     shadow: rgba(100%,100%,100%,$shadow-opacity),
+    floating: rgba(100%, 100%, 100%, $floating-opacity),
+    soft-shadow: rgba(100%, 100%, 100%, calc($shadow-opacity / 2)),
     fg: #FFFFFF
 );
 
@@ -21,6 +24,8 @@ $clr-light: (
     bg-hover-2: #D0D0D0,
     bg-hover-3: #C8C8C8,
     shadow: rgba(0%,0%,0%,$shadow-opacity),
+    floating: rgba(0%, 0%, 0%, $floating-opacity),
+    soft-shadow: rgba(0%, 0%, 0%, calc($shadow-opacity / 2)),
     fg: #101010
 );
 

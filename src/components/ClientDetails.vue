@@ -5,6 +5,7 @@ import ClientManager from '@/lib/ClientManager';
 import { computed, onUnmounted, ref } from 'vue';
 import ClientEventComponent from './ClientEvent.vue';
 import Server from '@/lib/Server';
+import Button from './Button.vue';
 
 const props = defineProps<{
     data: Client,
@@ -52,43 +53,51 @@ function lock() {
 <template>
 <div class="ClientDetails">
     <div class="header">
-        <div class="info">
+        <div class="info top-bottom">
             <div class="top">
-                <span class="title">Client Details</span>
+                <span class="title">Client Details <i class="fa-solid fa-circle-info"></i></span>
             </div>
             <div class="bottom">
-                <span class="name">{{ data.name }}</span>
-                <span class="ip_address">{{ data.ip_address }}</span>
+                <Button :disabled="true" class="name"><span><i class="fa-solid fa-signature"></i> {{ data.name }}</span></Button>
+                <Button :disabled="true" class="ip_address"><span><i class="fa-solid fa-location-dot"></i> {{ data.ip_address }}</span></Button>
             </div>
         </div>
 
-        <div class="controls">
-            <span v-if="state.locked" @click="unlock()">unlock <i class="fa-solid fa-lock-open"></i></span>
-            <span v-else @click="lock()">lock <i class="fa-solid fa-lock"></i></span>
+        <div class="controls top-bottom">
+            <div class="top">
+                <span class="title">Controls <i class="fa-solid fa-sliders"></i></span>
+            </div>
+            <div class="bottom">
+                <Button v-if="state.locked" @click="unlock()"><span>Unlock <i class="fa-solid fa-lock-open"></i></span></Button>
+                <Button v-else @click="lock()"><span>Lock <i class="fa-solid fa-lock"></i></span></Button>
+            </div>
         </div>
     </div>
 
-    <div class="state">
-        <span>State:</span>
-        <span v-if="state.locked">locked <i class="fa-solid fa-lock"></i></span>
+    <div class="state top-bottom">
+        <div class="top">
+            <span class="title">State <i class="fa-solid fa-chart-line"></i></span>
+        </div>
+        <div class="bottom">
+            <Button v-if="state.locked" :disabled="true"><span>Locked <i class="fa-solid fa-lock"></i></span></Button>
+        </div>
     </div>
 
-    <div class="events">
-        <span>Events</span>
-        <ClientEventComponent v-for="event in events.slice().reverse()" :data="event"/>
+    <div class="events top-bottom">
+        <div class="top">
+            <span class="title">Events <i class="fa-solid fa-comments"></i></span>
+        </div>
+        <div class="bottom">
+            <ClientEventComponent v-for="event in events.slice().reverse()" :data="event"/>
+        </div>
     </div>
 </div>
 </template>
 
 <style lang="scss" scoped>
 @use '@/styles/lib/mixins';
+@use '@/styles/lib/dimens';
 
-@mixin container {
-    @include mixins.box;
-    flex-direction: column;
-    background-color: var(--clr-bg-1);
-    align-items: stretch;
-}
 
 .ClientDetails {
     @include mixins.box;
@@ -97,9 +106,20 @@ function lock() {
     align-items: stretch;
     padding: 0;
 
+    .title {
+        @include mixins.emphasis;
+    }
 
-    > .state, > .events {
-        @include container;
+    .top-bottom {
+        @include mixins.top-bottom;
+    }
+
+
+    .events {
+        > .bottom {
+            display: flex;
+            flex-direction: column;
+        }
     }
 
     > .header {
@@ -107,32 +127,13 @@ function lock() {
         padding: 0;
         flex-direction: row;
         align-items: stretch;
-        > div {
-            @include container;
-            display: flex;
+
+        > .top-bottom {
             flex-grow: 2;
         }
 
-        > .info > .bottom{
-            display: flex;
-            flex-direction: row;
-            gap: 1em;
-        }
-
-        > .controls:empty {
-            display: none;
-        }
     }
 
-    .state {
-        flex-direction: row !important;
-    }
-
-    .controls {
-       > * {
-        @include mixins.clickable;
-       } 
-    }
 }
 
 </style>
