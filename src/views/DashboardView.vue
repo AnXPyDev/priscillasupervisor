@@ -81,6 +81,7 @@ getRooms();
         }
 
         > .bottom {
+            width: 100%;
             display: flex;
             flex-direction: column;
             gap: dimens.$padding;

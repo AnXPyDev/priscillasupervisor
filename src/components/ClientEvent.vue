@@ -14,6 +14,7 @@ const data_obj = computed<object>(() => {
 });
 
 const severity_icons: { [severity: number]: string } = {
+    [-2]: "fa-envelope-circle-check",
     [-1]: "fa-star",
     [0]: "fa-circle-info",
     [1]: "fa-triangle-exclamation",

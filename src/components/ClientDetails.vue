@@ -30,22 +30,23 @@ onUnmounted(() => {
     manager.stop();
 });
 
-function unlock() {
+function sendAction(action: string) {
     Server.post("/user/sendmessage", {
         client_id: props.data.id,
-        data: JSON.stringify({
-            action: "unlock"
-        })
+        data: JSON.stringify({ action })
     });
 }
 
+function unlock() {
+    sendAction("unlock");
+}
+
 function lock() {
-    Server.post("/user/sendmessage", {
-        client_id: props.data.id,
-        data: JSON.stringify({
-            action: "lock"
-        })
-    });
+    sendAction("lock");
+}
+
+function clearWarning() {
+    sendAction("clear_warning");
 }
 
 </script>
@@ -70,6 +71,7 @@ function lock() {
             <div class="bottom">
                 <Button v-if="state.locked" @click="unlock()"><span>Unlock <i class="fa-solid fa-lock-open"></i></span></Button>
                 <Button v-else @click="lock()"><span>Lock <i class="fa-solid fa-lock"></i></span></Button>
+                <Button v-if="state.warning" @click="clearWarning()"><span>Clear Warning <i class="fa-solid fa-shield-check"></i></span></Button>
             </div>
         </div>
     </div>
@@ -79,7 +81,9 @@ function lock() {
             <span class="title">State <i class="fa-solid fa-chart-line"></i></span>
         </div>
         <div class="bottom">
+            <Button v-if="state.locked" :disabled="true"><span>Disconnected <i class="fa-solid fa-signal-slash"></i></span></Button>
             <Button v-if="state.locked" :disabled="true"><span>Locked <i class="fa-solid fa-lock"></i></span></Button>
+            <Button v-if="state.warning" :disabled="true"><span>Warning <i class="fa-solid fa-triangle-exclamation"></i></span></Button>
         </div>
     </div>
 

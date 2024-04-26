@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Severity } from '@/lib/Bridge';
 import { computed } from 'vue';
 
 
@@ -17,18 +18,23 @@ const value_pairs = computed(() => {
     const results: { key: string, value: string }[] = [];
 
     for (const key in data) {
+        const value = data[key]
         if (key == "data") {
-            for (const key2 in data[key]) {
+            for (const key2 in value) {
                 results.push({
-                    key: key2, value: JSON.stringify(data[key][key2], null, 2)
+                    key: key2, value: JSON.stringify(value[key2], null, 2)
                 });
             }
             continue;
+        } else if (key == "severity") {
+            results.push({
+                key, value: Severity[value] 
+            });
+        } else {
+            results.push({
+                key: key, value: JSON.stringify(value, null, 2)
+            });
         }
-
-        results.push({
-            key: key, value: JSON.stringify(data[key], null, 2)
-        });
     }
 
     return results;

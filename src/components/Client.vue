@@ -20,6 +20,7 @@ const state = computed<ClientState>(() => JSON.parse(props.data.state));
             <span class="name">{{ data.name }}</span>
             <div class="states">
                 <i v-if="state.locked" class="fa-solid fa-lock"></i>
+                <i v-if="state.warning" class="fa-solid fa-triangle-exclamation"></i>
             </div>
         </div>
     </Button>

@@ -5,6 +5,12 @@ export interface Room {
     watch_code: string
 }
 
+export enum Severity {
+    MESSAGE_RECEIVED = -2,
+    SPECIAL_INFO = -1,
+    INFO, WARNING, SEVERE, BREACH
+};
+
 export interface Client {
     id: number
     name: string
@@ -22,6 +28,8 @@ export interface ClientEvent {
 
 export interface ClientState {
     locked: boolean
+    warning: boolean
+    disconnected: boolean
 }
 
 export interface RoomEvent {
