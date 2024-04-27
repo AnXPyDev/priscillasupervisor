@@ -4,7 +4,7 @@ import type { Client, Room, ClientState, ClientEvent } from '@/lib/Bridge';
 import ClientManager from '@/lib/ClientManager';
 import { computed, onUnmounted, ref } from 'vue';
 import ClientEventComponent from './ClientEvent.vue';
-import Server from '@/lib/Server';
+import server from '@/lib/Server';
 import Button from './Button.vue';
 
 const props = defineProps<{
@@ -31,7 +31,7 @@ onUnmounted(() => {
 });
 
 function sendAction(action: string) {
-    Server.post("/user/sendmessage", {
+    server.post("/user/message", {
         client_id: props.data.id,
         data: JSON.stringify({ action })
     });

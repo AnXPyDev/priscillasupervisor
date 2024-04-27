@@ -17,7 +17,6 @@ export class Server {
         this.configuration = configuration;
         this.auth = auth;
 
-        console.log(this.configuration.server_url, this.auth.session);
         if (this.configuration.server_url && this.auth.session) {
             try {
                 await this.connect();
@@ -93,21 +92,17 @@ export class Server {
 
     async createRoom(options: {
         name?: string,
-        config?: string,
-        config_override?: object
+        config: string,
     }) {
         return await this.post("/user/createroom", {
             name: options.name != "" && options.name || undefined,
-            config: options.config != "" && options.config || undefined,
-            config_override: options.config_override
+            config: options.config
         });
     }
     
     async getRooms() {
         return await this.post("/user/getrooms");
     }
-
-
 };
 
 export default new Server();

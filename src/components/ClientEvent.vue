@@ -47,6 +47,7 @@ function toggleExpand() {
                 <span class="time">{{ formatTime(new Date(data.created)) }}</span>
                 <i v-if="severity !== undefined" class="icon fa-solid" :class="severity_icons[severity] ?? 'fa-question'"></i>
             </div>
+            {{ data.id }}
             <div class="message">
                 <span>{{ message }}</span>
             </div>
