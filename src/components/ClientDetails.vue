@@ -81,7 +81,8 @@ function clearWarning() {
             <span class="title">State <i class="fa-solid fa-chart-line"></i></span>
         </div>
         <div class="bottom">
-            <Button v-if="state.locked" :disabled="true"><span>Disconnected <i class="fa-solid fa-signal-slash"></i></span></Button>
+            <Button v-if="state.disconnected" :disabled="true"><span>Disconnected <i class="fa-solid fa-signal-slash"></i></span></Button>
+            <Button v-if="state.debug" :disabled="true"><span>Debug Enabled <i class="fa-solid fa-ban-bug"></i></span></Button>
             <Button v-if="state.locked" :disabled="true"><span>Locked <i class="fa-solid fa-lock"></i></span></Button>
             <Button v-if="state.warning" :disabled="true"><span>Warning <i class="fa-solid fa-triangle-exclamation"></i></span></Button>
         </div>

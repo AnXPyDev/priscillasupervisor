@@ -64,6 +64,8 @@ setTheme("light");
 
 app.use(router);
 
+router.push({ name: "root" });
+
 app.mount('#app')
 
 

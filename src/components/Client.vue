@@ -19,6 +19,8 @@ const state = computed<ClientState>(() => JSON.parse(props.data.state));
         <div class="container">
             <span class="name">{{ data.name }}</span>
             <div class="states">
+                <i v-if="state.disconnected" class="fa-solid fa-signal-slash"></i>
+                <i v-if="state.warning" class="fa-solid fa-ban-bug"></i>
                 <i v-if="state.locked" class="fa-solid fa-lock"></i>
                 <i v-if="state.warning" class="fa-solid fa-triangle-exclamation"></i>
             </div>

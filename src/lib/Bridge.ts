@@ -6,6 +6,7 @@ export interface Room {
 }
 
 export enum Severity {
+    DEBUG = -3,
     MESSAGE_RECEIVED = -2,
     SPECIAL_INFO = -1,
     INFO, WARNING, SEVERE, BREACH
@@ -30,6 +31,7 @@ export interface ClientState {
     locked: boolean
     warning: boolean
     disconnected: boolean
+    debug: true
 }
 
 export interface RoomEvent {
