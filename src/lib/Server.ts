@@ -2,6 +2,7 @@ import { useAuth } from "@/stores/auth";
 import { useConfiguration } from "@/stores/configuration";
 import type { Axios, AxiosResponse } from "axios";
 import axios from "axios";
+import { createConnection, type Connection } from "./Connection";
 
 type Configuration = ReturnType<typeof useConfiguration>;
 type Auth = ReturnType<typeof useAuth>;
@@ -11,7 +12,7 @@ export class Server {
     auth!: Auth;
     features!: any;
 
-    connection!: Axios; 
+    connection!: Connection; 
 
     async init(configuration: Configuration, auth: Auth) {
         this.configuration = configuration;
@@ -47,9 +48,7 @@ export class Server {
     }
 
     async connect() {
-        this.connection = axios.create({
-            baseURL: this.configuration.server_url
-        });
+        this.connection = createConnection({ url: this.configuration.server_url!! });
 
         this.features = await this.post("/info/features");
     }
