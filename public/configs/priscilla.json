@@ -1,6 +1,8 @@
 {
     "name": "Priscilla Secure Test",
-    "kiosk": true,
+    "kiosk": {
+        "waitfor": "TRIGGER_login"
+    },
     "integrity": {
         "modules": {
             "vanguard": {
@@ -8,7 +10,9 @@
                     "watch_foreground_window": {}
                 }
             },
-            "supervisor": {}
+            "supervisor": {
+                "waitfor": "TRIGGER_login"
+            }
         }
     },
     "webprofiles": {
@@ -21,7 +25,8 @@
                         {
                             "triggers": [ "https://priscilla.fitped.eu/dashboard" ],
                             "target": "test",
-                            "message": "Logged in to priscilla"
+                            "message": "Logged in to priscilla",
+                            "emit": "TRIGGER_login"
                         }
                     ],
                     "nav_whitelist": [

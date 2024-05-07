@@ -49,6 +49,10 @@ function clearWarning() {
     sendAction("clear_warning");
 }
 
+function enableDebug() {
+    sendAction("enable_debug");
+}
+
 </script>
 
 <template>
@@ -69,6 +73,7 @@ function clearWarning() {
                 <span class="title">Controls <i class="fa-solid fa-sliders"></i></span>
             </div>
             <div class="bottom">
+                <Button v-if="!state.debug" @click="enableDebug()"><span>Enable Debug <i class="fa-solid fa-ban-bug"></i></span></Button>
                 <Button v-if="state.locked" @click="unlock()"><span>Unlock <i class="fa-solid fa-lock-open"></i></span></Button>
                 <Button v-else @click="lock()"><span>Lock <i class="fa-solid fa-lock"></i></span></Button>
                 <Button v-if="state.warning" @click="clearWarning()"><span>Clear Warning <i class="fa-solid fa-shield-check"></i></span></Button>
