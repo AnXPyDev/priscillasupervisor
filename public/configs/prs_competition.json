@@ -1,0 +1,94 @@
+{
+    "name": "Priscilla Secure Test",
+    "kiosk": {
+        "waitfor": "TRIGGER_login"
+    },
+    "integrity": {
+        "modules": {
+            "vanguard": {
+                "features": {
+                    "watch_foreground_window": {}
+                }
+            },
+            "supervisor": {
+                "waitfor": "TRIGGER_login"
+            }
+        }
+    },
+    "webprofiles": {
+        "priscilla": {
+            "type": "sequence",
+            "stages": {
+                "login": {
+                    "entry": "https://priscilla.fitped.eu/login",
+                    "exits": [
+                        {
+                            "triggers": [ "https://priscilla.fitped.eu/dashboard" ],
+                            "target": "selection",
+                            "message": "Logged in to priscilla",
+                            "emit": "TRIGGER_login"
+                        }
+                    ],
+                    "nav_whitelist": [
+                        "https://priscilla.fitped.eu/dashboard"
+                    ]
+                },
+                "selection": {
+                    "entry": "https://priscilla.fitped.eu/course_content/131",
+                    "exits": [
+                        {
+                            "triggers": [ "https://priscilla.fitped.eu/competition_content/" ],
+                            "target": "competition",
+                            "message": "Entered competition",
+                            "emit": "TRIGGER_competition"
+                        }
+                    ]
+                },
+                "competition": {
+                    "exits": [
+                        {
+                            "triggers": [ "https://priscilla.fitped.eu/competition_result/" ],
+                            "target": "results",
+                            "message": "Finished competition",
+                            "emit": "TRIGGER_finish"
+                        }
+                    ]
+                },
+                "results": {}
+            },
+            "begin": "login",
+            "whitelist": [
+                "https://.*\\.fitped\\.eu/",
+                "https://cdn\\..*/",
+                "https://cdnjs\\..*/",
+                "https://fonts\\..*/",
+                ".*://.*fpvai.ukf.sk/"
+            ],
+            "nav_whitelist": [
+                "https://priscilla.fitped.eu/competition_content/",
+                "https://priscilla.fitped.eu/competition_result/"
+            ]
+        },
+        "translator": {
+            "homepage": "https://translate.google.com",
+            "whitelist": [
+                "https://.*gstatic\\.*"
+            ],
+            "nav_whitelist": [
+                "https://translate\\.google\\..*/",
+                "https://consent\\.google\\..*/"
+            ]
+        }
+    },
+    "applications": [
+        {
+            "name": "Priscilla",
+            "webprofile": "priscilla",
+            "start_open": true
+        },
+        {
+            "name": "Translator",
+            "webprofile": "translator"
+        }
+    ]
+}

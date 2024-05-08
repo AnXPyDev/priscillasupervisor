@@ -32,6 +32,7 @@ export interface ClientState {
     warning: boolean
     disconnected: boolean
     debug: true
+    done: true
 }
 
 export interface RoomEvent {
