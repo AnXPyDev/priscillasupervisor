@@ -40,7 +40,7 @@ async function createRoom() {
         <span>Name</span>
         <input v-model="room_name"></input>
         <span>Config</span>
-        <ConfigEditor v-model="config"></ConfigEditor>
+        <ConfigEditor class="ConfigEditor" v-model="config"></ConfigEditor>
         <Button @click="createRoom()">create room</Button>
         <span v-if="error" class="error">{{ error }}</span>
     </div>
@@ -48,12 +48,22 @@ async function createRoom() {
 
 <style scoped lang="scss">
 @use '@/styles/lib/dimens';
+@use '@/styles/lib/mixins';
 .RoomCreatorView {
-    width: max(200px, 30vw);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: dimens.$padding-small;
+
+    input {
+        @include mixins.input;
+        padding: dimens.$padding-small;
+        font-size: 0.8em;
+    }
+
+    .ConfigEditor {
+        width: max(700px, 50vw);
+    }
 
     .override {
         font-family: monospace;

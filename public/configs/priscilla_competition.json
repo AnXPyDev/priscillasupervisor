@@ -1,8 +1,5 @@
 {
-    "name": "Priscilla Secure Test",
-    "kiosk": {
-        "waitfor": "TRIGGER_login"
-    },
+    "name": "Priscilla Competition",
     "integrity": {
         "modules": {
             "vanguard": {
@@ -11,9 +8,13 @@
                 }
             },
             "supervisor": {
-                "waitfor": "TRIGGER_login"
+                "locking_active": false
             }
         }
+    },
+    "event_flow": {
+        "Priscilla-login": [ "Client-enableKiosk", "Supervisor-enableLocking"],
+        "Priscilla-finish": [ "State-done", "Client-disableKiosk", "Supervisor-disableLocking"]
     },
     "webprofiles": {
         "priscilla": {
@@ -26,7 +27,7 @@
                             "triggers": [ "https://priscilla.fitped.eu/dashboard" ],
                             "target": "selection",
                             "message": "Logged in to priscilla",
-                            "emit": "TRIGGER_login"
+                            "emit": "Priscilla-login"
                         }
                     ],
                     "nav_whitelist": [
@@ -39,8 +40,7 @@
                         {
                             "triggers": [ "https://priscilla.fitped.eu/competition_content/" ],
                             "target": "competition",
-                            "message": "Entered competition",
-                            "emit": "TRIGGER_competition"
+                            "message": "Entered competition"
                         }
                     ]
                 },
@@ -50,7 +50,7 @@
                             "triggers": [ "https://priscilla.fitped.eu/competition_result/" ],
                             "target": "results",
                             "message": "Finished competition",
-                            "emit": "TRIGGER_finish"
+                            "emit": "Priscilla-finish"
                         }
                     ]
                 },

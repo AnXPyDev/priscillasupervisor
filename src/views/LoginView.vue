@@ -12,7 +12,7 @@ const configuration = useConfiguration();
 const auth = useAuth();
 const state = useState();
 
-const url = ref<string>("http://localhost/supervisor");
+const url = ref<string>("?https://aplikovanainformatika.sk/_server");
 const username = ref<string>("");
 const password = ref<string>("");
 const error = ref<string | undefined>();
@@ -62,6 +62,7 @@ async function login() {
 
 <style scoped lang="scss">
 @use '@/styles/lib/dimens';
+@use '@/styles/lib/mixins';
 
 $padding: dimens.$padding;
 
@@ -114,19 +115,10 @@ $padding: dimens.$padding;
             padding-left: calc($split_gap / 2);
 
             input {
+                @include mixins.input;
                 width: 20em;
                 padding: $padding;
                 font-size: 0.8em;
-
-                outline: var(--clr-fg) solid 1.5px;
-                border-radius: 5px;
-                border: none;
-                background-color: var(--clr-bg-1);
-                color: var(--clr-fg);
-
-                &.error {
-                    outline-color: var(--clr-fg-error);
-                }
             }
         }
     }
