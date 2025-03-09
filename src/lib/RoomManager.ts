@@ -3,7 +3,7 @@ import server from "./Server";
 
 export default class RoomManager {
 
-    eventLoopSleep: number = 1000;
+    eventLoopSleep: number = 5000;
     eventLoopRunning: boolean = false;
 
     last_room_event_id: number = -1;

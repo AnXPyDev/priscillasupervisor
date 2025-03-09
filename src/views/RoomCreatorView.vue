@@ -41,7 +41,7 @@ async function createRoom() {
         <input v-model="room_name"></input>
         <span>Config</span>
         <ConfigEditor class="ConfigEditor" v-model="config"></ConfigEditor>
-        <Button @click="createRoom()">create room</Button>
+        <Button @click="createRoom()">Create Room</Button>
         <span v-if="error" class="error">{{ error }}</span>
     </div>
 </template>

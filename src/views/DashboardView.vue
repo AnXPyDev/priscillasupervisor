@@ -17,7 +17,7 @@ const rooms = ref<Room[]>([]);
 async function getRooms() {
     try {
         const data = await server.getRooms();
-        rooms.value = data.rooms;
+        rooms.value = (data.rooms as Room[]).reverse();
     } catch (e) {
         console.error(e);
     }
@@ -30,6 +30,8 @@ function watchRoom(room: Room) {
 
 getRooms();
 
+const show_older = ref<boolean>(false)
+
 </script>
 
 <template>
@@ -38,10 +40,12 @@ getRooms();
         <div class="top">
             <span class="title">Rooms <i class="fa-solid fa-screen-users"></i></span>
         </div>
-        <div class="bottom">
-            <Button class="room" v-for="room in rooms" @click="watchRoom(room)">{{ room.name }}</Button>
-        </div>    
         <Button class="create_button" @click="openCreator()"><span>Create Room <i class="fa-solid fa-plus"></i></span></Button>
+        <Button class="create_button" @click="show_older = !show_older"><span>{{ !show_older ? "Show Older Rooms" : "Hide Older Rooms" }} <i class="fa-solid fa-eye"></i></span></Button>
+        <div></div>
+        <div class="bottom">
+            <Button class="room" v-for="room, index in rooms" v-show="index < 6 || show_older" @click="watchRoom(room)">{{ room.name }}</Button>
+        </div>
     </div>
 </div>
 </template>

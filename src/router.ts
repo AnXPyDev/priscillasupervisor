@@ -20,7 +20,7 @@ const router = createRouter({
         { name: "dashboard", meta: { requiresAuth: true }, path: "/dashboard", component: DashboardView },
         { name: "creator", meta: { requiresAuth: true }, path: "/creator", component: RoomCreatorView }
     ],
-    history: createWebHistory()
+    history: createWebHistory(import.meta.env.BASE_URL)
 });
 
 router.beforeEach((to, from) => {

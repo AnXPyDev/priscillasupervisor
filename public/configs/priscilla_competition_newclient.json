@@ -1,0 +1,23 @@
+{
+	"variables": {
+		"course_url": {
+			"name": "Priscilla Course URL",
+			"default": "https://priscilla.fitped.eu/course_content/131"
+		},
+		"pushservice_type": {
+			"name": "Push service type",
+			"decription": "unified or realtime",
+			"default": "unified"
+		},
+		"pushservice_interval": {
+			"name": "Pushservice interval",
+			"description": "Determines the push interval for unified pushservice",
+			"default": "10000"
+		},
+		"mailbox_interval": {
+			"name": "Mailbox interval",
+			"description": "Determines the interval for client to receive messages",
+			"default": "10000"
+		}
+	}
+}

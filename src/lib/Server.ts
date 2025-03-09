@@ -76,8 +76,6 @@ export class Server {
         this.auth.auth = true;
         this.auth.session = data.session!!;
 
-        console.log(data);
-
         await this.restore();
     }
 

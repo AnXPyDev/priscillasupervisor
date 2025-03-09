@@ -1,3 +1,4 @@
 [
-    "priscilla_competition.json"
+    { "name": "Priscilla Competition", "path": "priscilla_competition.json", "template_path": "template_priscilla_competition.json" },
+    { "name": "Priscilla Competition (newclient)", "path": "priscilla_competition_newclient.json", "template_path": "template_priscilla_competition_newclient.json" }
 ]
